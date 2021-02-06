@@ -5,8 +5,7 @@ services:
     hostname: "mongo"
     environment: 
       - MONGO_INITDB_DATABASE=logs      # todo: research external parameters 
-      - MONGO_INITDB_ROOT_USERNAME=root # todo: research useage of secrets 
-      - MONGO_INITDB_ROOT_PASSWORD=root # todo: research useage of secrets 
+      
     ports: 
       - '27017-27019:27017-27019'
     # TODO: research usage of volumes for persistance 
