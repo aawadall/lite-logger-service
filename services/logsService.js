@@ -7,13 +7,13 @@ let LogService = class {
      getLogs = function(req, callback) {
         // TODO
         //console.debug(req)
-        this.dataDriver.getLogs(getSearchTerms(req), callback)
+        this.dataDriver.getLogs(this.getSearchTerms(req), callback)
     }
 
      postLogs = function(req, callback) {
         // TODO
         //console.debug(req)
-        this.dataDriver.writeLogs(getPayload(req), callback)
+        this.dataDriver.writeLogs(this.getPayload(req), callback)
     }
 
      getSearchTerms = function(req) {
