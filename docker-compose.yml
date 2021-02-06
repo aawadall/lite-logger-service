@@ -2,9 +2,13 @@ version: "3.8"
 services: 
   mongo:
     image: "mongo"
+    environment: 
+      - MONGO_INITDB_DATABASE=logs      # todo: research external parameters 
+      - MONGO_INITDB_ROOT_USERNAME=root # todo: research useage of secrets 
+      - MONGO_INITDB_ROOT_PASSWORD=root # todo: research useage of secrets 
     ports: 
-      - target: 27017
-        published: 27017 
+      - '27017-27019:27017-27019'
+    # TODO: research usage of volumes for persistance 
   logger-service:
     build: .
     ports: 
