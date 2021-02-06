@@ -9,6 +9,7 @@ let DataDriver = class {
             if(err) {
                 this.err = err
                 console.error(err)
+                throw err
             }
             else {
                 console.debug(`Database created @ ${dbUrl}`)
