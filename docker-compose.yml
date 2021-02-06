@@ -1,7 +1,8 @@
 version: "3.8"
 services: 
   mongo:
-    image: "mongo"
+    image: mongo
+    hostname: "mongo"
     environment: 
       - MONGO_INITDB_DATABASE=logs      # todo: research external parameters 
       - MONGO_INITDB_ROOT_USERNAME=root # todo: research useage of secrets 
@@ -16,3 +17,5 @@ services:
         published: 3000
     depends_on: 
       - mongo
+    environment: 
+      - MONGO_HOST=mongo

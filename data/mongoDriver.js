@@ -6,7 +6,7 @@ let DataDriver = class {
 
     constructor(dbUrl) {
         console.log(`Starting db client @ ${dbUrl}`)
-        this.dbUrl = dbUrl
+        // this.dbUrl = dbUrl
         
         mongodb.MongoClient.connect(dbUrl, (err, db)=>{
             if(err) {
@@ -16,13 +16,22 @@ let DataDriver = class {
             }
             else {
                 console.debug(`Database created @ ${dbUrl}`)
-                this.db = db
+                this.dbUrl = dbUrl
             }
         })
     }
     getLogs = function (searchTerm, callback) {
         // TODO  
-        callback(null, {message: "some result"})  
+        callback(null, (err, result) =>
+        {
+            mongodb.MongoClient.connect(dbUrl, (er, db) => {
+                if(er) {
+                    err = er
+                } else {
+                    result = db.db('logs').collection('logs').find(searchTerm)
+                }
+            })
+        })  
     }
 
     writeLogs = function (payload, callback) {
