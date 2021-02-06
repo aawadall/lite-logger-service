@@ -1,9 +1,29 @@
+const DataDriver = require('../data/mongoDriver')
+const LogsService = require('../services/logsService')
+
+const logsService = new LogsService(new DataDriver('mongodb://localhost:27017/logs'))
+
 function getLogs(req, res) {
-    res.status(200).json({message: 'ack:get'})
+    logsService.getLogs(req, (err, result) => {
+        if (err) {
+            res.status(200).json(result)
+        } 
+        else {
+            res.status(err.status).json(err.message)
+        }
+    })
+    
 }
 
 function postLogs(req, res) {
-    res.status(201).json({message:'ack:post'})
+    logsService.postLogs(req, (err, result) => {
+        if (err) {
+            res.status(201).json(result)
+        } 
+        else {
+            res.status(err.status).json(err.message)
+        }
+    })
 }
 
 module.exports = {

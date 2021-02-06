@@ -1,14 +1,30 @@
+const MongoClient = require('mongodb').MongoClient
 
+let DataDriver = class {
 
-function getLogs(searchTerm, callback) {
-    // TODO    
+    constructor(dbUrl) {
+        this.dbUrl = dbUrl
+        MongoClient.connect(dbUrl, (err, db)=>{
+            if(err) this.err = err
+            else {
+                console.debug(`Database created @ ${dbUrl}`)
+                this.db = db
+            }
+        })
+    }
+    getLogs = function (searchTerm, callback) {
+        // TODO  
+        callback(null, {message: "some result"})  
+    }
+
+    writeLogs = function (payload, callback) {
+        // TODO
+        callback(null, {message: "some result", payload: payload})  
+    }
+
+    shutdown = function () {
+        this.db.close()
+    }
 }
 
-function writeLogs(payload, callback) {
-    // TODO
-}
-
-module.exports = new {
-    getLogs: getLogs,
-    writeLogs: writeLogs
-}
+module.exports = DataDriver

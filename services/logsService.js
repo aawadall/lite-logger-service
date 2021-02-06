@@ -1,27 +1,28 @@
-const data = require('../data/mongoDriver')
+let LogService = class {
+    constructor(dataDriver){
+        dataDriver = dataDriver
+    }
 
-function getLogs(req, callback) {
-    // TODO
-    data.getLogs(getSearchTerms(req, callback))
-}
+     getLogs = function(req, callback) {
+        // TODO
+        dataDriver.getLogs(getSearchTerms(req, callback))
+    }
 
-function postLogs(req, callback) {
-    // TODO
-    data.writeLogs(getPayload(req, callback))
-}
+     postLogs = function(req, callback) {
+        // TODO
+        dataDriver.writeLogs(getPayload(req, callback))
+    }
 
-function getSearchTerms(req) {
-    // TODO 
-    let searchTerms = new {}
-    return searchTerms
-}
+     getSearchTerms = function(req) {
+        // TODO 
+        let searchTerms = new {}
+        return searchTerms
+    }
 
-function getPayload(req) {
-    // TODO
-    let payload = new {}
-    return payload
+     getPayload = function(req) {
+        // TODO
+        let payload = new {}
+        return payload
+    }
 }
-module.exports = {
-    getLogs: getLogs,
-    postLogs: postLogs
-}
+module.exports = LogService
