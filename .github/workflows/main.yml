@@ -31,10 +31,10 @@ jobs:
         uses: sudo-bot/action-docker-compose@latest
         with:
           # Command line arguments
-          cli-args: ""
+          cli-args: "build"
 
       - name: tests
-        run: echo TODO write integration test cases
+        run: echo TODO write integration test cases, shoud invoke exec command instead 
 
       - name: bring stack down 
         uses: sudo-bot/action-docker-compose@latest
