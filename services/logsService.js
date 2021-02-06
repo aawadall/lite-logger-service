@@ -5,23 +5,25 @@ let LogService = class {
 
      getLogs = function(req, callback) {
         // TODO
+        console.debug(req)
         dataDriver.getLogs(getSearchTerms(req, callback))
     }
 
      postLogs = function(req, callback) {
         // TODO
+        console.debug(req)
         dataDriver.writeLogs(getPayload(req, callback))
     }
 
      getSearchTerms = function(req) {
         // TODO 
-        let searchTerms = new {}
+        let searchTerms = {}
         return searchTerms
     }
 
      getPayload = function(req) {
         // TODO
-        let payload = new {}
+        let payload = {}
         return payload
     }
 }
