@@ -4,8 +4,6 @@ ADD . /app
 
 WORKDIR /app 
 
-CMD [ "npm","install" ]
+RUN npm install
 
-EXPOSE 3000
-
-ENTRYPOINT [ "/app/start.sh" ]
+ENTRYPOINT [ "npm", "start" ]
