@@ -4,6 +4,8 @@ ADD . /app
 
 WORKDIR /app 
 
-ENTRYPOINT ["npm","start"]
+CMD [ "npm","install" ]
 
 EXPOSE 3000
+
+ENTRYPOINT [ "/app/start.sh" ]

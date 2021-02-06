@@ -1,0 +1,14 @@
+version: "3.3"
+services: 
+  mongo:
+    image: "mongo"
+    ports: 
+      - target: 27017
+        published: 27017 
+  logger-service:
+    build: .
+    ports: 
+      - target: 3000
+        published: 3000
+    depends_on: 
+      - mongo
