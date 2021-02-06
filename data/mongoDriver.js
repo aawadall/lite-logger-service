@@ -3,9 +3,13 @@ const MongoClient = require('mongodb').MongoClient
 let DataDriver = class {
 
     constructor(dbUrl) {
+        console.log(`Starting db client @ ${dbUrl}`)
         this.dbUrl = dbUrl
         MongoClient.connect(dbUrl, (err, db)=>{
-            if(err) this.err = err
+            if(err) {
+                this.err = err
+                console.error(err)
+            }
             else {
                 console.debug(`Database created @ ${dbUrl}`)
                 this.db = db

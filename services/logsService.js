@@ -1,5 +1,6 @@
 let LogService = class {
     constructor(dataDriver){
+        console.debug(`Init: LogService `)
         dataDriver = dataDriver
     }
 
