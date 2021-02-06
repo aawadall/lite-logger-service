@@ -1,11 +1,14 @@
+const mongodb = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
+
 
 let DataDriver = class {
 
     constructor(dbUrl) {
         console.log(`Starting db client @ ${dbUrl}`)
         this.dbUrl = dbUrl
-        MongoClient.connect(dbUrl, (err, db)=>{
+        
+        mongodb.MongoClient.connect(dbUrl, (err, db)=>{
             if(err) {
                 this.err = err
                 console.error(err)

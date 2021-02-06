@@ -1,7 +1,9 @@
 const DataDriver = require('../data/mongoDriver')
 const LogsService = require('../services/logsService')
-
-const logsService = new LogsService(new DataDriver('mongodb://localhost:27017/logs'))
+const logsDbName = 'logs'
+const mongoUrl = `mongodb://172.22.0.2:27017/${logsDbName}`
+// TODO: find out how to lookup mongodb service ip address and port 
+const logsService = new LogsService(new DataDriver(mongoUrl, "root", "root"))
 
 function getLogs(req, res) {
     logsService.getLogs(req, (err, result) => {
