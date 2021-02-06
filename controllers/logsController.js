@@ -8,7 +8,7 @@ const logsService = new LogsService(new DataDriver(mongoUrl))
 
 function getLogs(req, res) {
     logsService.getLogs(req, (err, result) => {
-        if (err) {
+        if (!err) {
             res.status(200).json(result)
         } 
         else {
@@ -20,7 +20,7 @@ function getLogs(req, res) {
 
 function postLogs(req, res) {
     logsService.postLogs(req, (err, result) => {
-        if (err) {
+        if (!err) {
             res.status(201).json(result)
         } 
         else {

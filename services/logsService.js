@@ -1,3 +1,5 @@
+const validator = require('./logValidator')
+
 let LogService = class {
     constructor(dataDriver){
         console.debug(`Init: LogService `)
@@ -6,31 +8,34 @@ let LogService = class {
 
      getLogs = function(req, callback) {
         // TODO
-        //console.debug(req)
-        this.dataDriver.getLogs(this.getSearchTerms(req), callback)
+        
+        this.dataDriver.getLogs(getSearchTerms(req), callback)
     }
 
      postLogs = function(req, callback) {
         // TODO
-        //console.debug(req)
-        this.dataDriver.writeLogs(this.getPayload(req), callback)
+        const payload = getPayload(req)
+        validator.validate(payload, (err, logEntry) => {
+            if(!err) {
+                this.dataDriver.writeLogs(logEntry, callback)
+            }
+        })
+        
     }
 
-     getSearchTerms = function(req) {
-        // TODO 
-        console.log("************************************************ ");
-        console.log("*************** GET SEARCH TERMS *************** ");
-        console.log(req);
-        console.log("*************** GET SEARCH TERMS *************** ");
-        console.log("************************************************ ");
-        let searchTerms = req
-        return searchTerms
-    }
-
-     getPayload = function(req) {
-        // TODO
-        let payload = {}
-        return payload
-    }
+     
 }
 module.exports = LogService
+
+getSearchTerms = function(req) {
+    // TODO 
+    
+    let searchTerms = req.query
+    return searchTerms
+}
+
+ getPayload = function(req) {
+    // TODO
+    let payload = req.body
+    return payload
+}
