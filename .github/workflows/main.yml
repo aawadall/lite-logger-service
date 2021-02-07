@@ -59,10 +59,10 @@ jobs:
       - name: survey files
         run: ls 
 
-      - name: test cURL
-        run: curl -X GET localhost:3000/api/logs
-        
-      - name: invoke integration tests
-        run: sudo ./integration.sh
+      - name: lookup logger address
+        run: docker network inspect logger-service
+
+      # - name: invoke integration tests
+      #   run: sudo ./integration.sh
 
  
