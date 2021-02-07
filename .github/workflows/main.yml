@@ -55,7 +55,7 @@ jobs:
       ports: 
         - '3000:3000'
       env:
-        - MONGO_HOST: mongo
+        - MONGO_HOST=mongo
       options: --hostname logger
     steps:
       
@@ -70,7 +70,7 @@ jobs:
 
       - name: test cURL
         run: curl -X GET https://logger:3000/api/logs
-        
+
       # - name: invoke integration tests
       #   run: sudo ./integration.sh
 
