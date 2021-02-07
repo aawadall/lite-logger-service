@@ -36,7 +36,7 @@ jobs:
         with:
           push: true
           tags: aawadall/logging-service:latest
-          
+          # TODO find a way to auto advance to create image versions in tags 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   integration-tests:
@@ -59,7 +59,10 @@ jobs:
       - name: survey files
         run: ls 
 
+      - name: test cURL
+        run: curl -X GET localhost:3000/api/logs
+        
       - name: invoke integration tests
-        run: ./integration.sh
+        run: sudo ./integration.sh
 
  
