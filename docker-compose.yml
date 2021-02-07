@@ -11,6 +11,7 @@ services:
     # TODO: research usage of volumes for persistance 
   logger-service:
     build: .
+    hostname: logger-service
     ports: 
       - target: 3000
         published: 3000

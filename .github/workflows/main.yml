@@ -34,7 +34,11 @@ jobs:
           cli-args: "build"
 
       - name: tests
-        run: echo TODO write integration test cases, shoud invoke exec command instead 
+        uses: sudo-bot/action-docker-compose@latest
+        with:
+          # Command line arguments
+          cli-args: "run integration.sh"
+
 
       - name: bring stack down 
         uses: sudo-bot/action-docker-compose@latest
