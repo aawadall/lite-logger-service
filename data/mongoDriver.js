@@ -25,13 +25,18 @@ let DataDriver = class {
     }
     getLogs = function (searchTerm, callback) {
         // TODO  
-        callback(null, (err, result) =>
+        console.debug('get logs');
+        callback((err, result) =>
         {
             mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) {
                     err = er
+                    console.error(er);
                 } else {
-                    result = db.db(dbName).collection(collectionName).find(searchTerm)
+                    console.log(db.logs.find());
+                    console.log(db.logs.find(searchTerm));
+                    result = db.logs.find(searchTerm)
+                    //db.db(dbName).collection(collectionName).find(searchTerm).read()
                 }
             })
         })  
@@ -39,11 +44,16 @@ let DataDriver = class {
 
     writeLogs = function (payload, callback) {
         // TODO
-        callback(null, (err, result) => {
+        console.debug("writeLogs");
+        callback((err, result) => {
             mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
-                if(er) err = er 
+                if(er) {
+                    err = er 
+                    console.error(er);
+                }
                 else {
-                    result = db.db(dbName).collection(collectionName).insertOne(payload)
+                    result = db.logs.insert(payload)
+                    //db.db(dbName).collection(collectionName).insertOne(payload)
 
                 }
             })

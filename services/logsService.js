@@ -27,6 +27,7 @@ let LogService = class {
 }
 module.exports = LogService
 
+
 getSearchTerms = function(req) {
     // TODO 
     
@@ -37,5 +38,6 @@ getSearchTerms = function(req) {
  getPayload = function(req) {
     // TODO
     let payload = req.body
+    console.debug(`payload: ${payload}`);
     return payload
 }
