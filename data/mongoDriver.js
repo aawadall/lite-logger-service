@@ -32,14 +32,12 @@ let DataDriver = class {
         // TODO  fix reading function 
         mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) {
-                    err = er
                     callback(er, null)
                 } else {
                     // TODO find how to populate result
-                    const result = db.db(dbName).collection(collectionName).find(searchTerm)
+                    const result = db.db(dbName).collection(collectionName).find(searchTerm).toArray()
                     // TODO handle errors 
                     callback(null, result)
-                    
                 }
         })
         
@@ -57,9 +55,9 @@ let DataDriver = class {
                 callback(er,null)
             }
             else {
-                const result = db.db(dbName).collection(collectionName).insertOne(payload)
-                // TODO find a better way to define result 
-                callback(null, result)
+                const result = db.db(dbName).collection(collectionName).insertOne(payload, (err, result) => {
+                    callback(err, result.result)
+                })
             }
         })
     }
