@@ -9,7 +9,7 @@ let LogService = class {
      getLogs = function(req, callback) {
         // TODO
         
-        this.dataDriver.getLogs(getSearchTerms(req), callback)
+        this.dataDriver.getLogs(getSearchTerms(req), callback(err, result))
     }
 
      postLogs = function(req, callback) {
@@ -17,7 +17,7 @@ let LogService = class {
         const payload = getPayload(req)
         validator.validate(payload, (err, logEntry) => {
             if(!err) {
-                this.dataDriver.writeLogs(logEntry, callback)
+                this.dataDriver.writeLogs(logEntry, callback(err, result))
             }
         })
         

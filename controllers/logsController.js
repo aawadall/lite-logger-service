@@ -20,6 +20,7 @@ function getLogs(req, res) {
 
 function postLogs(req, res) {
     logsService.postLogs(req, (err, result) => {
+        console.debug('Controller:postLogs -> callback->err'+err);
         if (!err) {
             res.status(201).json(result)
         } 
