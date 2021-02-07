@@ -1,6 +1,7 @@
 const mongodb = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
-
+const dbName = 'logs'
+const collectionName = 'logs'
 
 let DataDriver = class {
 
@@ -16,6 +17,8 @@ let DataDriver = class {
             }
             else {
                 console.debug(`Database created @ ${dbUrl}`)
+                db.db(dbName).createCollection(collectionName)
+
                 this.dbUrl = dbUrl
             }
         })
@@ -28,7 +31,7 @@ let DataDriver = class {
                 if(er) {
                     err = er
                 } else {
-                    result = db.db('logs').collection('logs').find(searchTerm)
+                    result = db.db(dbName).collection(collectionName).find(searchTerm)
                 }
             })
         })  
@@ -40,7 +43,7 @@ let DataDriver = class {
             mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) err = er 
                 else {
-                    result = db.db('logs').collection('logs').insertOne(payload)
+                    result = db.db(dbName).collection(collectionName).insertOne(payload)
 
                 }
             })
