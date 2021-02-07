@@ -25,44 +25,35 @@ let DataDriver = class {
     }
     getLogs = function (searchTerm, callback) {
         // TODO  
-        console.debug('get logs');
-        callback((err, result) =>
-        {
-            mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
+        mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) {
                     err = er
                     console.error(er);
+                    callback(er, null)
                 } else {
-                    console.log(db.logs.find());
-                    console.log(db.logs.find(searchTerm));
-                    result = db.logs.find(searchTerm)
-                    //db.db(dbName).collection(collectionName).find(searchTerm).read()
+                    // TODO 
+                    const result = db.db(dbName).collection(collectionName).find(searchTerm)
+                    callback(null, result)
+                    
                 }
-            })
-        })  
+        })
+        
     }
 
     writeLogs = function (payload, callback) {
         // TODO
-        console.debug("writeLogs");
-        callback((err, result) => {
-            mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
-                if(er) {
-                    err = er 
-                    console.error(er);
-                }
-                else {
-                    result = db.logs.insert(payload)
-                    //db.db(dbName).collection(collectionName).insertOne(payload)
-
-                }
-            })
-        }
-            )  
-    }
-
-    shutdown = function () {
-        this.db.close()
+        mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
+            if(er) {
+                err = er 
+                console.error(er);
+                callback(er,null)
+            }
+            else {
+                
+                const result = db.db(dbName).collection(collectionName).insertOne(payload)
+                callback(null, result)
+            }
+        })
     }
 }
 
