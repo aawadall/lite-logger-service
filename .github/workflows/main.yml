@@ -50,20 +50,22 @@ jobs:
           - '27017-27019:27017-27019'
         options: --hostname mongo
       
-    container:
-      image: aawadall/logging-service:latest
-      ports: 
-        - '3000:3000'
-      env:
-        MONGO_HOST: mongo
-      options: --hostname logger
+      logger:
+        image: aawadall/logging-service:latest
+        ports: 
+          - '3000:3000'
+        env:
+          MONGO_HOST: mongo
+        options: --hostname logger
+
     steps:
-      
       - name: Checkout 
         uses: actions/checkout@v2 
-        
+
       - name: test cURL
-        run: curl -X GET https://logger:3000/api/logs
+        uses: wei/curl@v1
+        with:
+          args: -X GET https://logger:3000/api/logs
 
       # - name: invoke integration tests
       #   run: sudo ./integration.sh
