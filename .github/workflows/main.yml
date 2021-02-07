@@ -59,15 +59,18 @@ jobs:
         options: --hostname logger
 
     steps:
-      - name: Checkout 
+      - name: checkout code 
         uses: actions/checkout@v2 
-
-      - name: test cURL
+        
+      - name: Test GET empty set
         uses: wei/curl@v1
         with:
-          args: -X GET https://logger:3000/api/logs
+          args: -X GET logger:3000/api/logs
 
-      # - name: invoke integration tests
-      #   run: sudo ./integration.sh
+      - name: Test POST 
+        uses: wei/curl@v1
+        with:
+            args: -X POST -H 'Content-Type: application/json' -d @tests/sample_payload_1.json logger:3000/api/logs
 
+ 
  
