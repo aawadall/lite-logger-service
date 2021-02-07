@@ -12,6 +12,29 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/bake-action@master
+        with:
+          files: |
+            ./config.hcl
+          targets: |
+            release
+          push: true
   test:
     runs-on: ubuntu-latest
     services:
@@ -21,24 +44,6 @@ jobs:
           - '27017-27019:27017-27019'
     steps:
       - name: test mongo 
-        run: netstat -na 
+        run: echo mock test
 
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: Build stack
-        # You may pin to the exact commit or the version.
-        # uses: sudo-bot/action-docker-compose@8f7f7075349a715ca899eb83ab91f4be6b4e84d0
-        uses: sudo-bot/action-docker-compose@latest
-        with:
-          # Command line arguments
-          cli-args: "build"
-      
-      - name: tests
-        run: echo TODO write integration test cases, shoud invoke exec command instead 
-
+ 
