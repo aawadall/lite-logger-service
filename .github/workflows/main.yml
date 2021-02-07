@@ -1,8 +1,5 @@
-# This is a basic workflow to help you get started with Actions
+name: Experimental
 
-name: CI
-
-# Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -17,47 +14,31 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo         
+        ports: 
+          - '27017-27019:27017-27019'
     steps:
-      - uses: actions/checkout@v2 # Latest build
-      - name: update apt registery 
-        run: sudo apt-get update
+      - name: test mongo 
+        run: netstat -na 
 
-      - name: install docker 
-        run: sudo apt-get -y install docker 
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-      - name: test docker-compose 
-        run: docker-compose version 
-        
-      - name: run stack 
-        run: docker-compose up &
-
-      - name: test stack 
-        run: echo test placeholder
-
-      - name: tear down stack
-        run: docker-compose down 
-
-  # build:
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v2
-  #     - name: Build stack
-  #       # You may pin to the exact commit or the version.
-  #       # uses: sudo-bot/action-docker-compose@8f7f7075349a715ca899eb83ab91f4be6b4e84d0
-  #       uses: sudo-bot/action-docker-compose@latest
-  #       with:
-  #         # Command line arguments
-  #         cli-args: "build"
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Build stack
+        # You may pin to the exact commit or the version.
+        # uses: sudo-bot/action-docker-compose@8f7f7075349a715ca899eb83ab91f4be6b4e84d0
+        uses: sudo-bot/action-docker-compose@latest
+        with:
+          # Command line arguments
+          cli-args: "build"
       
-  #     - name: tests
-  #       run: echo TODO write integration test cases, shoud invoke exec command instead 
+      - name: tests
+        run: echo TODO write integration test cases, shoud invoke exec command instead 
 
-  #     - name: bring stack down 
-  #       uses: sudo-bot/action-docker-compose@latest
-  #       with:
-  #         # Command line arguments
-  #         cli-args: down
