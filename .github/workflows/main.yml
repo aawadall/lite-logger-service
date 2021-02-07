@@ -42,26 +42,35 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
     needs: build-image
+    
     services:
       mongo:
         image: mongo         
         ports: 
           - '27017-27019:27017-27019'
-      logger-service:
-        image: aawadall/logging-service:latest
-        ports: 
-          - '3000:3000'
-        
+        options: --hostname mongo
+      
+    container:
+      image: aawadall/logging-service:latest
+      ports: 
+        - '3000:3000'
+      env:
+        - MONGO_HOST: mongo
+      options: --hostname logger
     steps:
+      
       - name: Checkout 
         uses: actions/checkout@v2 
 
-      - name: survey files
-        run: ls 
+      - name: survey containers
+        run: docker ps 
 
-      - name: lookup logger address
-        run: docker network inspect logger-service
+      - name: survey services
+        run: docker service ls
 
+      - name: test cURL
+        run: curl -X GET https://logger:3000/api/logs
+        
       # - name: invoke integration tests
       #   run: sudo ./integration.sh
 
