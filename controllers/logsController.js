@@ -3,9 +3,14 @@ const LogsService = require('../services/logsService')
 const logsDbName = ''
 const mongoHost = process.env.MONGO_HOST || 'localhost'
 const mongoUrl = `mongodb://${mongoHost}:27017/${logsDbName}`
-// TODO: find out how to lookup mongodb service ip address and port 
+
 const logsService = new LogsService(new DataDriver(mongoUrl))
 
+/**
+ * get logs controller
+ * @param {*} req request object
+ * @param {*} res response object
+ */
 function getLogs(req, res) {
     logsService.getLogs(req, (err, result) => {
         if (!err) {
@@ -18,9 +23,13 @@ function getLogs(req, res) {
     
 }
 
+/**
+ * post logs controller
+ * @param {*} req request object
+ * @param {*} res response object
+ */
 function postLogs(req, res) {
     logsService.postLogs(req, (err, result) => {
-        console.debug('Controller:postLogs -> callback->err'+err);
         if (!err) {
             res.status(201).json(result)
         } 

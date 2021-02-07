@@ -1,43 +1,54 @@
 const validator = require('./logValidator')
 
+/**
+ * service layer reading and writing logs 
+ * @param {*} dataDriver database driver 
+ */
 let LogService = class {
     constructor(dataDriver){
-        console.debug(`Init: LogService `)
         this.dataDriver = dataDriver
     }
 
-     getLogs = function(req, callback) {
-        // TODO
-        
-        this.dataDriver.getLogs(getSearchTerms(req), callback(err, result))
+    /**
+     * find logs 
+     * @param {*} req raw request object from controller (query used to search logs)
+     * @param {*} callback 
+     */
+    getLogs = function(req, callback) {
+        this.dataDriver.getLogs(getSearchTerms(req), (err, result) => {
+            callback(err, result)
+        })
     }
 
-     postLogs = function(req, callback) {
-        // TODO
+    /**
+     * writes logs
+     * @param {*} req raw request object from controller (body used to write log entry)
+     * @param {*} callback 
+     */
+    postLogs = function(req, callback) {
         const payload = getPayload(req)
         validator.validate(payload, (err, logEntry) => {
             if(!err) {
-                this.dataDriver.writeLogs(logEntry, callback(err, result))
+                this.dataDriver.writeLogs(logEntry, (er, result) => {
+                    callback(er, result)
+                })
+            }
+            else {
+                callback(err,null)
             }
         })
-        
     }
-
-     
 }
 module.exports = LogService
 
 
+// Private methods 
+
+
 getSearchTerms = function(req) {
-    // TODO 
-    
-    let searchTerms = req.query
-    return searchTerms
+    return req.query
 }
 
  getPayload = function(req) {
-    // TODO
-    let payload = req.body
-    console.debug(`payload: ${payload}`);
-    return payload
+    return req.body
 }
