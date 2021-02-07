@@ -41,6 +41,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
   integration-tests:
     runs-on: ubuntu-latest
+    needs: build-image
     services:
       mongo:
         image: mongo         
@@ -52,7 +53,13 @@ jobs:
           - '3000:3000'
         
     steps:
-      - name: test mongo 
-        run: integration.sh
+      - name: Checkout 
+        uses: actions/checkout@v2 
+
+      - name: survey files
+        run: ls 
+
+      - name: invoke integration tests
+        run: ./integration.sh
 
  
