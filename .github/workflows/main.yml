@@ -39,7 +39,7 @@ jobs:
           
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-  test:
+  integration-tests:
     runs-on: ubuntu-latest
     services:
       mongo:
@@ -53,6 +53,6 @@ jobs:
         
     steps:
       - name: test mongo 
-        run: echo mock test
+        run: integration.sh
 
  
