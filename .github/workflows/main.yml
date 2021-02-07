@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USER }}/logging-service:latest
+          tags: aawadall/logging-service:latest
           
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -47,7 +47,7 @@ jobs:
         ports: 
           - '27017-27019:27017-27019'
       logger-service:
-        image: ${{ secrets.DOCKERHUB_USER }}/logging-service:latest
+        image: aawadall/logging-service:latest
         ports: 
           - '3000:3000'
         env: 
