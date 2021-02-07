@@ -51,7 +51,7 @@ jobs:
         ports: 
           - '3000:3000'
         env: 
-          - MONGO_HOST=localhost
+          - MONGO_HOST: localhost
     steps:
       - name: test mongo 
         run: echo mock test
