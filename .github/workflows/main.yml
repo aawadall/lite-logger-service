@@ -72,5 +72,19 @@ jobs:
         with:
             args: -X POST -d @tests/sample_payload_1.json logger:3000/api/logs
 
+      - name: Test GET after insert
+        uses: wei/curl@v1
+        with:
+          args: -X GET logger:3000/api/logs > tests/result.json 
+
+      - name: Compare input with output 
+        uses: LouisBrunner/diff-action@v0.1.0
+        with:
+          old: tests/sample_payload_1.json
+          new: tests/result.json 
+          mode: addition
+          tolerance: better
+          
+
  
  
