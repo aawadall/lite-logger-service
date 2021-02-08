@@ -4,7 +4,7 @@ const logsDbName = ''
 const mongoHost = process.env.MONGO_HOST || 'localhost'
 const mongoUrl = `mongodb://${mongoHost}:27017/${logsDbName}`
 
-const logsService = new LogsService(new DataDriver(mongoUrl))
+const healthService = new HealthService(new DataDriver(mongoUrl))
 
 function getHealth(req, res) {
     // TODO write methods to probe required services and return health status.
