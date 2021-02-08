@@ -129,11 +129,11 @@ jobs:
 
       - name: Inspect result
         run: cat tests/result.json 
-        
+
       - name: Compare input with output 
         uses: LouisBrunner/diff-action@v0.1.0
         with:
-          old: tests/sample_payload_1.json
+          old: tests/expected.json
           new: tests/result.json 
           mode: addition
           tolerance: better
