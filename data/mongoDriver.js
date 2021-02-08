@@ -35,9 +35,11 @@ let DataDriver = class {
                     callback(er, null)
                 } else {
                     // TODO find how to populate result
-                    const result = db.db(dbName).collection(collectionName).find(searchTerm).toArray()
+                    db.db(dbName).collection(collectionName).find(searchTerm).toArray((err, result) => {
+                        callback(err, result)
+                    })
                     // TODO handle errors 
-                    callback(null, result)
+                    
                 }
         })
         
