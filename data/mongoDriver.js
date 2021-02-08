@@ -64,6 +64,16 @@ let DataDriver = class {
             }
         })
     }
+
+    getStats = function (callback) {
+        mongodb.MongoClient.connect(this.dbUrl, (err, db) => {
+            if(!err) {
+                db.db(dbName).stats((err, result) => {
+                    callback(err, result)
+                })
+            }
+        })
+    }
 }
 
 module.exports = DataDriver

@@ -7,16 +7,23 @@ const mongoUrl = `mongodb://${mongoHost}:27017/${logsDbName}`
 const healthService = new HealthService(new DataDriver(mongoUrl))
 
 function getHealth(req, res) {
-    // TODO write methods to probe required services and return health status.
-    // TODO for now, return hardcoded value
-    res.status(200).json(
-        {overall: 'ok', 
-        database : {
-            status: 'ok',
-            hostname: 'name or ip',
-            roundtrip: '200 ms'
+    
+    healthService.getHealth((err, result) => {
+        if(!err) {
+            res.status(200).json(
+                {overall: 'ok', 
+                 database : result
+            })
+        } else {
+            res.status(500).json(
+                {overall: 'down', 
+                 database : result
+            })
         }
+        
     })
+    
+    
 }
 
 
