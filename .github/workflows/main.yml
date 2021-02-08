@@ -136,7 +136,7 @@ jobs:
           old: tests/expected.json
           new: tests/result.json 
           mode: addition
-          tolerance: better
+          tolerance: same
           
 
  
