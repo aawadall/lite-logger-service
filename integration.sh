@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # create entry
 curl -X POST \
  -H "Content-Type: application/json" \

@@ -18,7 +18,7 @@ let DataDriver = class {
             else {
                 // TODO check collections and create if not present
                 db.db(dbName).listCollections().toArray((err, collections) => {
-                    console.log(collections)
+                    
                     if(createCollection)
                         db.db(dbName).createCollection(collectionName)
                 })
