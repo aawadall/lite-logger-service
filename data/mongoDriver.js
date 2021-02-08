@@ -8,7 +8,7 @@ const collectionName = 'logs'
  * @param {string} dbUrl database url 
  */
 let DataDriver = class {
-    constructor(dbUrl) {
+    constructor(dbUrl, createCollection = false) {
         this.dbUrl = dbUrl
         mongodb.MongoClient.connect(dbUrl, (err, db)=>{
             if(err) {
@@ -16,8 +16,12 @@ let DataDriver = class {
                 throw err
             }
             else {
-                console.debug(`Database created @ ${dbUrl}`)
-                db.db(dbName).createCollection(collectionName)
+                // TODO check collections and create if not present
+                db.db(dbName).listCollections().toArray((err, collections) => {
+                    console.log(collections)
+                    if(createCollection)
+                        db.db(dbName).createCollection(collectionName)
+                })
                 this.dbUrl = dbUrl
             }
         })
@@ -34,12 +38,9 @@ let DataDriver = class {
                 if(er) {
                     callback(er, null)
                 } else {
-                    // TODO find how to populate result
                     db.db(dbName).collection(collectionName).find(searchTerm).toArray((err, result) => {
                         callback(err, result)
-                    })
-                    // TODO handle errors 
-                    
+                    })    
                 }
         })
         
