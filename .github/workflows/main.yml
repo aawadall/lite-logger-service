@@ -127,6 +127,9 @@ jobs:
         with:
           args: -X GET logger:3000/api/logs > tests/result.json 
 
+      - name: Inspect result
+        run: cat tests/result.json 
+        
       - name: Compare input with output 
         uses: LouisBrunner/diff-action@v0.1.0
         with:
