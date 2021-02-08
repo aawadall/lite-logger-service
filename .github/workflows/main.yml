@@ -70,7 +70,7 @@ jobs:
       - name: Test POST 
         uses: wei/curl@v1
         with:
-            args: -X POST -d @tests/sample_payload_1.json logger:3000/api/logs
+            args: -X POST -H @tests/header.dat -d @tests/sample_payload_1.json logger:3000/api/logs
 
       - name: Test GET after insert
         uses: wei/curl@v1
