@@ -10,7 +10,7 @@ const collectionName = 'logs'
 let DataDriver = class {
     constructor(dbUrl, createCollection = false) {
         this.dbUrl = dbUrl
-        mongodb.MongoClient.connect(dbUrl, (err, db)=>{
+        mongodb.MongoClient.connect(dbUrl, (err, db) =>{
             if(err) {
                 this.err = err
                 throw err

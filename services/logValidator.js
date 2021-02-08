@@ -10,5 +10,5 @@ function validate(logEntry, callback) {
 }
 
 module.exports = { 
-    validate: validate
+    validate
 }

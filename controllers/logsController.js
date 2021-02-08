@@ -40,6 +40,6 @@ function postLogs(req, res) {
 }
 
 module.exports = {
-    getLogs: getLogs,
-    postLogs: postLogs
+    getLogs,
+    postLogs
 }
