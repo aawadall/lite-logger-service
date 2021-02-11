@@ -46,6 +46,8 @@ module.exports = LogService
 
 
 getSearchTerms = function(req) {
+    // TODO handle take, skip and sort 
+    // TODO handle timestamp {from and to}
     return req.query
 }
 
