@@ -1,21 +1,21 @@
-version: "3.8"
-services: 
+version: "3.3"
+services:
   mongo:
     image: mongo
     hostname: "mongo"
-    environment: 
-      - MONGO_INITDB_DATABASE=logs      # todo: research external parameters 
-      
-    ports: 
-      - '27017-27019:27017-27019'
-    # TODO: research usage of volumes for persistance 
+    environment:
+      - MONGO_INITDB_DATABASE=logs # todo: research external parameters
+
+    ports:
+      - "27017-27019:27017-27019"
+    # TODO: research usage of volumes for persistance
   logger-service:
     build: .
     hostname: logger-service
-    ports: 
+    ports:
       - target: 3000
         published: 3000
-    depends_on: 
+    depends_on:
       - mongo
-    environment: 
+    environment:
       - MONGO_HOST=mongo

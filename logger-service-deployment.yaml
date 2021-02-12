@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: logger-service
+  name: logger-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: logger-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: logger-service
+    spec:
+      containers:
+        - env:
+            - name: MONGO_HOST
+              value: mongo
+          image: logger-service
+          name: logger-service
+          ports:
+            - containerPort: 3000
+          resources: {}
+      hostname: logger-service
+      restartPolicy: Always
+status: {}
