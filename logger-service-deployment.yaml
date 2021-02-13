@@ -9,7 +9,7 @@ metadata:
     io.kompose.service: logger-service
   name: logger-service
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       io.kompose.service: logger-service
@@ -27,10 +27,11 @@ spec:
         - env:
             - name: MONGO_HOST
               value: mongo
-          image: logger-service
+          image: aawadall/logging-service:latest
           name: logger-service
           ports:
             - containerPort: 3000
+              protocol: TCP
           resources: {}
       hostname: logger-service
       restartPolicy: Always
