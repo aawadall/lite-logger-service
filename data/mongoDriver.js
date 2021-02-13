@@ -8,7 +8,7 @@ const collectionName = 'logs'
  * @param {string} dbUrl database url 
  */
 let DataDriver = class {
-    constructor(dbUrl, createCollection = false) {
+    constructor(dbUrl) {
         this.dbUrl = dbUrl
         MongoClient.connect(dbUrl, (err, db) =>{
             if(err) {
@@ -16,17 +16,11 @@ let DataDriver = class {
                 throw err
             }
             else {
-                // TODO check collections and create if not present
-                db.db(dbName).listCollections().toArray((err, collections) => {
-                    
-                    if(createCollection)
-                        db.db(dbName).createCollection(collectionName)
-                })
                 this.dbUrl = dbUrl
             }
         })
 
-        checkCollection(dbUrl, dbName, collectionName)
+        
     }
 
     /**
@@ -40,8 +34,11 @@ let DataDriver = class {
                 if(er) {
                     callback(er, null)
                 } else {
-                    db.db(dbName).collection(collectionName).find(searchTerm).toArray((err, result) => {
-                        callback(err, result)
+                    db.db(dbName)
+                        .collection(collectionName)
+                        .find(searchTerm)
+                        .toArray((err, result) => {
+                            callback(err, result)
                     })    
                 }
         })
@@ -60,8 +57,10 @@ let DataDriver = class {
                 callback(er,null)
             }
             else {
-                const result = db.db(dbName).collection(collectionName).insertOne(payload, (err, result) => {
-                    callback(err, result.result)
+                db.db(dbName)
+                    .collection(collectionName)
+                    .insertOne(payload, (err, result) => {
+                        callback(err, result.result)
                 })
             }
         })
@@ -79,21 +78,3 @@ let DataDriver = class {
 }
 
 module.exports = DataDriver
-
-checkCollection = function (dbUrl, dbName, collectionName) {
-    MongoClient.connect(dbUrl, (err, db) => {
-        if(!err) 
-        {
-            collection = db.db(dbName).getCollection(collectionName)
-            console.log(collection);
-        }
-    })
-}
-createCollection = function (dbUrl, dbName, collectionName) {
-    MongoClient.connect(dbUrl, (err, db) => {
-        if(!err) 
-        {
-            db.db(dbName).createCollection(collectionName)
-        }
-    })
-}
