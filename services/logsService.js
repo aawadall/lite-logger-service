@@ -15,7 +15,10 @@ let LogService = class {
      * @param {*} callback 
      */
     getLogs = function(req, callback) {
-        this.dataDriver.getLogs(getSearchTerms(req), (err, result) => {
+        const options = getOptions(req)
+        const searchTerms = getSearchTerms(req)
+
+        this.dataDriver.getLogs(searchTerms,options, (err, result) => {
             callback(err, result)
         })
     }
@@ -46,11 +49,26 @@ module.exports = LogService
 
 
 getSearchTerms = function(req) {
-    // TODO handle take, skip and sort 
+    let query = req.query
+    
+    delete query.skip
+    delete query.take
+    delete query.orderBy
+    
     // TODO handle timestamp {from and to}
-    return req.query
+    return query
 }
 
- getPayload = function(req) {
+getPayload = function(req) {
     return req.body
+}
+
+getOptions = function (req) {
+    const query = req.query
+   
+    let options = {}
+    options.limit = parseInt(query.take)
+    options.skip = parseInt(query.skip) 
+    options.sort = (query.orderBy).split(',')
+    return options
 }

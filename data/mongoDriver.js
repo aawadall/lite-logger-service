@@ -31,7 +31,7 @@ let DataDriver = class {
      * @param {any} searchTerm json object with search term 
      * @param {*} callback
      */
-    getLogs = function (searchTerm, callback) {
+    getLogs = function (searchTerm, options, callback) {
         // TODO  fix reading function 
         MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) {
@@ -40,7 +40,7 @@ let DataDriver = class {
                 
                     db.db(dbName)
                         .collection(collectionName)
-                        .find(searchTerm)
+                        .find(searchTerm, options)
                         .toArray((err, result) => {
                             callback(err, result)
                     })    
