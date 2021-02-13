@@ -1,4 +1,4 @@
-const mongodb = require('mongodb')
+// const mongodb = require('mongodb')
 const MongoClient = require('mongodb').MongoClient
 const dbName = 'logs'
 const collectionName = 'logs'
@@ -10,7 +10,7 @@ const collectionName = 'logs'
 let DataDriver = class {
     constructor(dbUrl, createCollection = false) {
         this.dbUrl = dbUrl
-        mongodb.MongoClient.connect(dbUrl, (err, db) =>{
+        MongoClient.connect(dbUrl, (err, db) =>{
             if(err) {
                 this.err = err
                 throw err
@@ -25,6 +25,8 @@ let DataDriver = class {
                 this.dbUrl = dbUrl
             }
         })
+
+        checkCollection(dbUrl, dbName, collectionName)
     }
 
     /**
@@ -77,3 +79,21 @@ let DataDriver = class {
 }
 
 module.exports = DataDriver
+
+checkCollection = function (dbUrl, dbName, collectionName) {
+    MongoClient.connect(dbUrl, (err, db) => {
+        if(!err) 
+        {
+            collection = db.db(dbName).getCollection(collectionName)
+            console.log(collection);
+        }
+    })
+}
+createCollection = function (dbUrl, dbName, collectionName) {
+    MongoClient.connect(dbUrl, (err, db) => {
+        if(!err) 
+        {
+            db.db(dbName).createCollection(collectionName)
+        }
+    })
+}

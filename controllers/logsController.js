@@ -4,7 +4,7 @@ const logsDbName = ''
 const mongoHost = process.env.MONGO_HOST || 'localhost'
 const mongoUrl = `mongodb://${mongoHost}:27017/${logsDbName}`
 
-const logsService = new LogsService(new DataDriver(mongoUrl, true))
+const logsService = new LogsService(new DataDriver(mongoUrl, false))
 
 /**
  * get logs controller
