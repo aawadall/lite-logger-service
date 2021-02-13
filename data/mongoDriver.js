@@ -17,6 +17,9 @@ let DataDriver = class {
             }
             else {
                 this.dbUrl = dbUrl
+                ensureCollection(db, dbName, collectionName, (er, created) => {
+                    if(er) throw er;
+                })
             }
         })
 
@@ -30,10 +33,11 @@ let DataDriver = class {
      */
     getLogs = function (searchTerm, callback) {
         // TODO  fix reading function 
-        mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
+        MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) {
                     callback(er, null)
                 } else {
+                
                     db.db(dbName)
                         .collection(collectionName)
                         .find(searchTerm)
@@ -51,12 +55,13 @@ let DataDriver = class {
      * @param {*} callback 
      */
     writeLogs = function (payload, callback) {
-        mongodb.MongoClient.connect(this.dbUrl, (er, db) => {
+        MongoClient.connect(this.dbUrl, (er, db) => {
             if(er) {
                 err = er 
                 callback(er,null)
             }
             else {
+                
                 db.db(dbName)
                     .collection(collectionName)
                     .insertOne(payload, (err, result) => {
@@ -67,14 +72,31 @@ let DataDriver = class {
     }
 
     getStats = function (callback) {
-        mongodb.MongoClient.connect(this.dbUrl, (err, db) => {
+        MongoClient.connect(this.dbUrl, (err, db) => {
             if(!err) {
+                
                 db.db(dbName).stats((err, result) => {
                     callback(err, result)
                 })
             }
+            else callback(err,null)
         })
     }
 }
 
 module.exports = DataDriver
+
+
+ensureCollection = function (db, dbName, collectionName, callback) {
+    
+    collection = db.db(dbName).collections( (err, collections) => {
+        let collectionCreated = false; 
+        if(collections.indexOf(collectionName) === -1)
+            db.db(dbName).createCollection(collectionName, (er, result) => {
+                if(er) err = er;
+                else collectionCreated = true;
+            })
+        callback(err, collectionCreated)
+    })
+    
+}
