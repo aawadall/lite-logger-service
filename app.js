@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 const logsRouter = require('./routes/logs')
 const healthRouter = require('./routes/health')
+const adminRouter = require('./routes/admin')
 
 var app = express();
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 app.use('/api/logs', logsRouter)
 app.use('/api/health', healthRouter)
+app.use('api/admin'. adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

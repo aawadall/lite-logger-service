@@ -7,7 +7,7 @@ const mongoUrl = `mongodb://${mongoHost}:27017/${logsDbName}`
 const healthService = new HealthService(new DataDriver(mongoUrl))
 
 function getHealth(req, res) {
-    
+    // TODO: simplify response to smaller payload
     healthService.getHealth((err, result) => {
         if(!err) {
             res.status(200).json(
