@@ -56,6 +56,21 @@ getSearchTerms = function(req) {
     delete query.orderBy
     
     // TODO handle timestamp {from and to}
+    
+    if (query.fromTime|| query.toTime) {
+        query.timestamp = {}
+    }
+
+    if(query.fromTime) {
+        query.timestamp.$gte = query.fromTime
+        delete query.fromTime
+    }
+
+    if(query.toTime) {
+        query.timestamp.$lte = query.toTime
+        delete query.toTime
+    }
+
     return query
 }
 
@@ -69,6 +84,6 @@ getOptions = function (req) {
     let options = {}
     options.limit = parseInt(query.take)
     options.skip = parseInt(query.skip) 
-    options.sort = (query.orderBy).split(',')
+    if(query.orderBy) options.sort = (query.orderBy).split(',')
     return options
 }

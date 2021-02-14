@@ -18,6 +18,7 @@ let DataDriver = class {
             else {
                 this.dbUrl = dbUrl
                 ensureCollection(db, dbName, collectionName, (er, created) => {
+                    db.close()
                     if(er) throw er;
                 })
             }
@@ -32,7 +33,6 @@ let DataDriver = class {
      * @param {*} callback
      */
     getLogs = function (searchTerm, options, callback) {
-        // TODO  fix reading function 
         MongoClient.connect(this.dbUrl, (er, db) => {
                 if(er) {
                     callback(er, null)
@@ -42,6 +42,7 @@ let DataDriver = class {
                         .collection(collectionName)
                         .find(searchTerm, options)
                         .toArray((err, result) => {
+                            db.close()
                             callback(err, result)
                     })    
                 }
@@ -65,6 +66,7 @@ let DataDriver = class {
                 db.db(dbName)
                     .collection(collectionName)
                     .insertOne(payload, (err, result) => {
+                        db.close()
                         callback(err, result.result)
                 })
             }
@@ -76,6 +78,7 @@ let DataDriver = class {
             if(!err) {
                 
                 db.db(dbName).stats((err, result) => {
+                    db.close()
                     callback(err, result)
                 })
             }
