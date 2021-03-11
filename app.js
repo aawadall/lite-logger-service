@@ -18,7 +18,6 @@ app.use(cookieParser());
 
 app.use('/api/logs', logsRouter)
 app.use('/api/health', healthRouter)
-app.use('api/admin'. adminRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
