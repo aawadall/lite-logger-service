@@ -27,3 +27,4 @@ services:
       - logger-service
     environment: 
       - PORT=3001
+      - BACKEND=logger-service
