@@ -10,7 +10,7 @@ services:
       - "27017-27019:27017-27019"
     # TODO: research usage of volumes for persistance
   logger-service:
-    build: .
+    build: .\lite_logger
     ports:
       - target: 3000
         published: 3000
