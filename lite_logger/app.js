@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 const logsRouter = require('./routes/logs')
 const healthRouter = require('./routes/health')
@@ -14,7 +15,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use(cors()); // enable CORS (FOR NOW)
 
 app.use('/api/logs', logsRouter)
 app.use('/api/health', healthRouter)

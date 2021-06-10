@@ -5,6 +5,9 @@ import '../utils/utils';
 import { COLUMNS } from './columns';
 import DisplayTable from './Table';
 
+
+const log_api_address = process.env.BACKEND_ADDRESS || 'localhost';
+const log_api_port = process.env.BACKEND_PORT || '3000';
 function DisplayLogApiResult() {
       const columns = React.useMemo(() => COLUMNS, []);
 
@@ -27,13 +30,18 @@ function DisplayLogApiResult() {
 
 
   const getlogData = async() => {
+    const url = "http://"+log_api_address+":"+log_api_port+"/api/logs";
+    const config = {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+      }
+    };
     try {
-      const data = await axios.get (
-        "http://localhost:3000/api/logs"
-      )
-      console.log(data.data.map(x => {
-        return flattenObject(x);
-      }));
+      const data = await axios.get (url, config)
+      // console.log(data.data.map(x => {
+      //   return flattenObject(x);
+      // }));
      setlogData(data.data.map(x => {
       return flattenObject(x);
     }));
@@ -41,6 +49,20 @@ function DisplayLogApiResult() {
     } catch (error) {
       console.log(error);
     }
+    // try {
+    //   const data = await axios.get (
+    //     "http://localhost:3000/api/logs"
+    //   )
+    //   console.log(data.data.map(x => {
+    //     return flattenObject(x);
+    //   }));
+    //  setlogData(data.data.map(x => {
+    //   return flattenObject(x);
+    // }));
+    //   setLoading(true);
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
   }
 

@@ -26,6 +26,6 @@ export const COLUMNS = [
       },
       {
             Header: 'Payload',
-            accessor: 'inner',
+            accessor: 'payload',
       }
 ]
