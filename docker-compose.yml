@@ -18,3 +18,12 @@ services:
       - mongo
     environment:
       - MONGO_HOST=mongo
+  logger-application:
+    build: .\Logger-lite-application
+    ports: 
+      - target: 3001
+        published: 3001
+    depends_on: 
+      - logger-service
+    environment: 
+      - PORT=3001
