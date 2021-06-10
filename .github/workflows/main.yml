@@ -3,9 +3,9 @@ name: Main Pipeline
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -19,50 +19,50 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript' ]
+        language: ["javascript"]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
         # Learn more:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: ${{ matrix.language }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-        # queries: ./path/to/local/query, your-org/your-repo/queries@main
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+          # If you wish to specify custom queries, you can do so here or in a config file.
+          # By default, queries listed here will override any specified in a config file.
+          # Prefix the list here with "+" to use these queries and those in the config file.
+          # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+      # If this step fails, then you should remove it and run the build manually (see below)
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
+      # ℹ️ Command-line programs to run using the OS shell.
+      # 📚 https://git.io/JvXDl
 
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
+      # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
+      #    and modify them (or add more) to build your code if your project
+      #    uses a compiled language
 
-    #- run: |
-    #   make bootstrap
-    #   make release
+      #- run: |
+      #   make bootstrap
+      #   make release
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
   build-image:
     name: Build Image
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 
-        uses: actions/checkout@v2 
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -71,45 +71,44 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: aawadall/logging-service:latest
-          # TODO find a way to auto advance to create image versions in tags 
+          # TODO find a way to auto advance to create image versions in tags
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
     needs: build-image
-    
+
     services:
       mongo:
-        image: mongo         
-        ports: 
-          - '27017-27019:27017-27019'
+        image: mongo
+        ports:
+          - "27017-27019:27017-27019"
         options: --hostname mongo
-      
+
       logger:
         image: aawadall/logging-service:latest
-        ports: 
-          - '3000:3000'
+        ports:
+          - "3000:3000"
         env:
           MONGO_HOST: mongo
         options: --hostname logger
 
     steps:
-      - name: checkout code 
-        uses: actions/checkout@v2 
+      - name: checkout code
+        uses: actions/checkout@v2
 
-      - name: Test health 
+      - name: Test health
         uses: wei/curl@v1
         with:
           args: -X GET logger:3000/api/health
@@ -119,21 +118,20 @@ jobs:
         with:
           args: -X GET logger:3000/api/logs
 
-      - name: Test POST 
+      - name: Test POST
         uses: wei/curl@v1
         with:
-            args: -X POST -H "Content-Type:\ application/json" -d @tests/sample_payload_1.json logger:3000/api/logs
+          args: -X POST -H "Content-Type:\ application/json" -d @lite_logger/tests/sample_payload_1.json logger:3000/api/logs
 
       - name: Test GET after insert
         uses: wei/curl@v1
         with:
-          args: -X GET logger:3000/api/logs > tests/result.json 
+          args: -X GET logger:3000/api/logs > lite_logger/tests/result.json
 
-      - name: Compare input with output 
+      - name: Compare input with output
         uses: LouisBrunner/diff-action@v0.1.0
         with:
-          old: tests/expected.json
-          new: tests/result.json 
+          old: lite_logger/tests/expected.json
+          new: lite_logger/tests/result.json
           mode: addition
           tolerance: same
-          
